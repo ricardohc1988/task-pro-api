@@ -71,12 +71,21 @@ def read_task(task_id: int, db: Session = Depends(database.get_db)):
 
 # Actualizar una tarea (Marcar como completada)
 @app.patch("/tasks/{task_id}", response_model=schemas.TaskResponse, tags=["Tasks"])
-def update_task(task_id: int, db: Session = Depends(database.get_db)):
+def toggle_task_status(task_id: int, db: Session = Depends(database.get_db)):
     """**Alternar estado de la tarea.**"""
     db_task = crud.get_task(db, task_id=task_id)
     if db_task is None:
         raise HTTPException(status_code=404, detail="Tarea no encontrada")
     return crud.update_task_status(db=db, db_task=db_task)
+
+# Editar título o descripción
+@app.put("/tasks/{task_id}", response_model=schemas.TaskResponse, tags=["Tasks"])
+def update_task(task_id: int, task: schemas.TaskUpdate, db: Session = Depends(database.get_db)):
+    """**Editar una tarea** """
+    db_task = crud.get_task(db, task_id=task_id)
+    if db_task is None:
+        raise HTTPException(status_code=404, detail="Tarea no encontrada")
+    return crud.update_task(db=db, db_task=db_task, task_update=task)
 
 # Eliminar una tarea
 @app.delete("/tasks/{task_id}", tags=["Tasks"])

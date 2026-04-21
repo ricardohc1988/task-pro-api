@@ -42,6 +42,16 @@ def create_task(db: Session, task: schemas.TaskCreate):
     db.refresh(db_task)
     return db_task
 
+def update_task(db: Session, db_task: models.Task, task_update: schemas.TaskUpdate):
+    """Actualiza solo los campos proporcionados en el cuerpo de la petición."""
+    update_data = task_update.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(db_task, field, value)
+    db.commit()
+    db.refresh(db_task)
+    return db_task
+
+
 def update_task_status(db: Session, db_task: models.Task):
     """Lógica simple de 'toggle' para el estado de completado."""
     db_task.completed = not db_task.completed

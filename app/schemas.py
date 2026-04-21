@@ -18,6 +18,10 @@ class TaskResponse(TaskBase):
     class Config:
         from_attributes = True
 
+class TaskUpdate(TaskBase):
+    title: Optional[str] = Field(None, min_length=3, max_length=50)
+    description: Optional[str] = Field(None, max_length=250)
+
 class TaskStats(BaseModel):
     total_tasks: int
     completed_tasks: int
