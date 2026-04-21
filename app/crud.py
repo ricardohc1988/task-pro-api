@@ -21,13 +21,13 @@ def get_tasks(
     query = db.query(models.Task)
     
     if search:
-            search_filter = f"%{search}%"
-            query = query.filter(
-                or_(
-                    models.Task.title.ilike(search_filter),
-                    models.Task.description.ilike(search_filter)
-                )
+        search_filter = f"%{search}%"
+        query = query.filter(
+            or_(
+                models.Task.title.ilike(search_filter),
+                models.Task.description.ilike(search_filter)
             )
+        )
     
     if completed is not None:
         query = query.filter(models.Task.completed == completed)

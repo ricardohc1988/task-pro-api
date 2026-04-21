@@ -80,7 +80,7 @@ def update_task(task_id: int, db: Session = Depends(database.get_db)):
 
 # Eliminar una tarea
 @app.delete("/tasks/{task_id}", tags=["Tasks"])
-def delete_task(task_id: int, db: Session = Depends(database.get_db), tags=["Tasks"]):
+def delete_task(task_id: int, db: Session = Depends(database.get_db)):
     """**Eliminar tarea.** Borra el registro de la base de datos."""
     db_task = crud.get_task(db, task_id=task_id)
     if db_task is None:
