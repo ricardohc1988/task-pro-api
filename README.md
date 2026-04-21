@@ -1,10 +1,10 @@
-# 🚀 Task Pro API - Backend Profesional con FastAPI & Docker
+# Task Pro API - Backend Profesional con FastAPI & Docker
 
-Task Pro API es una solución robusta para la gestión de tareas (Task Management), diseñada bajo una arquitectura escalable, utilizando **FastAPI** para el backend y **PostgreSQL** como motor de base de datos, todo orquestado mediante **Docker**.
+Task Pro API es una solución para la gestión de tareas, diseñada bajo una arquitectura escalable, utilizando **FastAPI** para el backend y **PostgreSQL** como motor de base de datos, todo orquestado mediante **Docker**.
 
 Este proyecto no es solo un CRUD; implementa filtros avanzados, búsqueda dual (título/descripción), estadísticas en tiempo real y una arquitectura resiliente con manejo de reconexión automática a la base de datos.
 
-## 🛠️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 * **Framework:** [FastAPI](https://fastapi.tiangolo.com/) (Python 3.11+)
 * **Base de Datos:** [PostgreSQL 15](https://www.postgresql.org/)
@@ -12,7 +12,7 @@ Este proyecto no es solo un CRUD; implementa filtros avanzados, búsqueda dual (
 * **Validación de Datos:** [Pydantic v2](https://docs.pydantic.dev/)
 * **Contenedores:** [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
 
-## ✨ Características Destacadas
+## Características Destacadas
 
 * **Arquitectura Refactorizada:** Separación clara entre rutas (main), esquemas (Pydantic), modelos y lógica de negocio (CRUD).
 * **Búsqueda Inteligente:** Filtro dual que busca palabras clave simultáneamente en títulos y descripciones.
@@ -37,9 +37,9 @@ Asegúrate de tener **Docker Desktop** instalado y sigue estos pasos:
 
 3.  **Accede a la documentación interactiva:**
     Una vez que los logs indiquen que la base de datos está lista, ve a:
-    👉 [http://localhost:8000/docs](http://localhost:8000/docs)
+    [http://localhost:8000/docs](http://localhost:8000/docs)
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```text
 task-pro-api/
