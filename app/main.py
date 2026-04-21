@@ -1,6 +1,6 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-from . import models, schemas, database, crud
+from . import models, schemas, database, crud, exceptions
 from typing import Optional
 
 # Inicializa la base de datos. Crea las tablas en PostgreSQL si no existen
@@ -17,6 +17,10 @@ app = FastAPI(
     * **Estadísticas** de productividad.
     """
 )
+
+app.add_exception_handler(exceptions.TaskNotFoundException, exceptions.task_not_found_handler)
+app.add_exception_handler(exceptions.TaskValidationException, exceptions.task_validation_handler)
+app.add_exception_handler(exceptions.EmptyUpdateException, exceptions.empty_update_handler)
 
 @app.get("/", tags=["General"])
 def home():
@@ -66,7 +70,7 @@ def read_task(task_id: int, db: Session = Depends(database.get_db)):
     """**Obtener una tarea específica por su ID.**"""
     db_task = crud.get_task(db, task_id=task_id)
     if db_task is None:
-        raise HTTPException(status_code=404, detail="Tarea no encontrada")
+        raise exceptions.TaskNotFoundException(task_id)
     return db_task
 
 # Actualizar una tarea (Marcar como completada)
@@ -75,7 +79,7 @@ def toggle_task_status(task_id: int, db: Session = Depends(database.get_db)):
     """**Alternar estado de la tarea.**"""
     db_task = crud.get_task(db, task_id=task_id)
     if db_task is None:
-        raise HTTPException(status_code=404, detail="Tarea no encontrada")
+        raise exceptions.TaskNotFoundException(task_id)
     return crud.update_task_status(db=db, db_task=db_task)
 
 # Editar título o descripción
@@ -84,7 +88,9 @@ def update_task(task_id: int, task: schemas.TaskUpdate, db: Session = Depends(da
     """**Editar una tarea** """
     db_task = crud.get_task(db, task_id=task_id)
     if db_task is None:
-        raise HTTPException(status_code=404, detail="Tarea no encontrada")
+        raise exceptions.TaskNotFoundException(task_id)
+    if not task.model_dump(exclude_unset=True):
+        raise exceptions.EmptyUpdateException()
     return crud.update_task(db=db, db_task=db_task, task_update=task)
 
 # Eliminar una tarea
@@ -93,7 +99,7 @@ def delete_task(task_id: int, db: Session = Depends(database.get_db)):
     """**Eliminar tarea.** Borra el registro de la base de datos."""
     db_task = crud.get_task(db, task_id=task_id)
     if db_task is None:
-        raise HTTPException(status_code=404, detail="Tarea no encontrada")
+        raise exceptions.TaskNotFoundException(task_id)
     crud.delete_task(db=db, db_task=db_task)
     return {"message": f"Tarea {task_id} eliminada con éxito"}
 
