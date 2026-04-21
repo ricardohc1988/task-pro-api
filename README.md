@@ -1,54 +1,80 @@
-# Task Pro API - Backend Profesional con FastAPI & Docker
+# Task Pro API
+### Backend Profesional con FastAPI, PostgreSQL & Docker
 
-Task Pro API es una solución para la gestión de tareas, diseñada bajo una arquitectura escalable, utilizando **FastAPI** para el backend y **PostgreSQL** como motor de base de datos, todo orquestado mediante **Docker**.
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 
-Este proyecto no es solo un CRUD; implementa filtros avanzados, búsqueda dual (título/descripción), estadísticas en tiempo real y una arquitectura resiliente con manejo de reconexión automática a la base de datos.
+**Task Pro API** es una solución robusta para la gestión de tareas, diseñada bajo una arquitectura escalable. No es solo un CRUD básico, implementa patrones avanzados de filtrado, búsqueda inteligente y estadísticas de productividad en tiempo real.
 
-## Tecnologías Utilizadas
+---
 
-* **Framework:** [FastAPI](https://fastapi.tiangolo.com/) (Python 3.11+)
-* **Base de Datos:** [PostgreSQL 15](https://www.postgresql.org/)
-* **ORM:** [SQLAlchemy](https://www.sqlalchemy.org/)
-* **Validación de Datos:** [Pydantic v2](https://docs.pydantic.dev/)
-* **Contenedores:** [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
+## Características
 
-## Características Destacadas
+*   ** Alto Rendimiento:** Construido sobre FastAPI y Pydantic v2 para una ejecución y validación ultra rápida.
+*   ** Búsqueda Dual Inteligente:** Algoritmo que filtra palabras clave simultáneamente en títulos y descripciones.
+*   ** Dashboard de Estadísticas:** Endpoint especializado (`/tasks/stats`) que calcula métricas clave de productividad.
+*   ** Arquitectura Limpia:** Separación estricta de responsabilidades (Modelos, Esquemas, Lógica CRUD y Rutas).
+*   ** Manejo de Errores Profesional:** Excepciones personalizadas con respuestas JSON estandarizadas.
+*   ** Resiliencia de Base de Datos:** Script de conexión con auto-reintentos para asegurar estabilidad en entornos Docker.
 
-* **Arquitectura Refactorizada:** Separación clara entre rutas (main), esquemas (Pydantic), modelos y lógica de negocio (CRUD).
-* **Búsqueda Inteligente:** Filtro dual que busca palabras clave simultáneamente en títulos y descripciones.
-* **Dashboard de Estadísticas:** Endpoint especializado (`/tasks/stats`) que calcula métricas de productividad (porcentaje de completado, totales, etc.).
-* **Validación Estricta:** Blindaje de datos mediante Pydantic para asegurar la integridad de la base de datos.
-* **Resiliencia:** Script de conexión con reintentos automáticos para esperar la inicialización de PostgreSQL en contenedores.
+---
 
-## Instalación y Ejecución con Docker
+## Tecnologías
 
-Asegúrate de tener **Docker Desktop** instalado y sigue estos pasos:
+*   **Backend:** Python 3.11+ con FastAPI.
+*   **ORM:** SQLAlchemy para una gestión eficiente de la DB.
+*   **Base de Datos:** PostgreSQL 15.
+*   **Despliegue:** Docker & Docker Compose.
 
-1.  **Clona este repositorio:**
+---
+
+## Inicio Rápido (Docker)
+
+Asegurarse de tener instalados **Docker** y **Docker Compose**.
+
+1.  **Clonar el repositorio:**
     ```bash
-    git clone [https://github.com/tu-usuario/task-pro-api.git](https://github.com/tu-usuario/task-pro-api.git)
+    git clone https://github.com/tu-usuario/task-pro-api.git
     cd task-pro-api
     ```
 
-2.  **Inicia la aplicación:**
+2.  **Lanzar el entorno:**
     ```bash
     docker-compose up --build
     ```
 
-3.  **Accede a la documentación interactiva:**
-    Una vez que los logs indiquen que la base de datos está lista, ve a:
-    [http://localhost:8000/docs](http://localhost:8000/docs)
+3.  **Explorar la API:**
+    La documentación interactiva estará disponible en:
+    *   **Swagger UI:** [http://localhost:8000/docs](http://localhost:8000/docs)
+    *   **ReDoc:** [http://localhost:8000/redoc](http://localhost:8000/redoc)
+
+---
+
+## Principales Endpoints
+
+| Método | Endpoint | Descripción |
+| :--- | :--- | :--- |
+| `GET` | `/tasks/` | Lista tareas con filtros (`search`, `completed`) y paginación. |
+| `POST` | `/tasks/` | Crea una nueva tarea (Validación de longitud mínima). |
+| `GET` | `/tasks/{id}` | Obtiene detalles de una tarea específica. |
+| `PATCH` | `/tasks/{id}` | Alterna el estado (completado/pendiente). |
+| `GET` | `/tasks/stats` | Retorna métricas globales de productividad. |
+
+---
 
 ## Estructura del Proyecto
 
 ```text
 task-pro-api/
 ├── app/
-│   ├── main.py          # Punto de entrada y rutas de la API
-│   ├── models.py        # Definición de tablas PostgreSQL
-│   ├── schemas.py       # Modelos de validación Pydantic
-│   ├── crud.py          # Lógica de base de datos (Query builder)
-│   └── database.py      # Configuración de SQLAlchemy y reconexión
-├── docker-compose.yml   # Orquestación de servicios (Web + DB)
-├── Dockerfile           # Configuración de la imagen de Python
-└── requirements.txt     # Dependencias del proyecto
+│   ├── main.py          # Punto de entrada y definición de rutas
+│   ├── models.py        # Modelos de tablas PostgreSQL (SQLAlchemy)
+│   ├── schemas.py       # Validación de datos y contratos (Pydantic)
+│   ├── crud.py          # Lógica de persistencia y consultas SQL
+│   ├── database.py      # Configuración de conexión y sesión
+│   └── exceptions.py    # Gestión de errores personalizados
+├── docker-compose.yml   # Orquestación de contenedores
+├── Dockerfile           # Definición de la imagen de la aplicación
+└── requirements.txt     # Dependencias del sistema
+```
